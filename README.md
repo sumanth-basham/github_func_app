@@ -12,10 +12,43 @@
 
 ## Deployment Steps
 
-1. Commit and push code to the appropriate branch (`dev`, `qa`, or `main`).
-2. GitHub Actions workflow for that environment runs automatically.
-3. Workflow installs dependencies, zips the app, and deploys to the correct Azure Function App using secrets.
-4. Monitor workflow and Azure portal for deployment status.
+### Step-by-Step Deployment Instructions
+
+1. **Prepare Azure Function Apps**
+	- Create three separate Azure Function Apps in your Azure portal: one each for Dev, QA, and Prod.
+	- Download the publish profile for each Function App.
+
+2. **Set GitHub Secrets**
+	- In your GitHub repository, go to Settings > Secrets and variables > Actions.
+	- Add the following secrets for each environment:
+	  - `AZURE_FUNCTIONAPP_NAME_DEV`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DEV`
+	  - `AZURE_FUNCTIONAPP_NAME_QA`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_QA`
+	  - `AZURE_FUNCTIONAPP_NAME_PROD`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_PROD`
+	- The `*_NAME` is the name of your Azure Function App. The `*_PUBLISH_PROFILE` is the content of the publish profile XML file (paste as a secret).
+
+3. **Branching**
+	- Use the `dev` branch for development deployments, `qa` for QA, and `main` for production.
+	- Make sure your code changes are committed to the correct branch for the intended environment.
+
+4. **Push Code**
+	- Commit and push your changes to the appropriate branch (`dev`, `qa`, or `main`).
+
+5. **Automatic Workflow Execution**
+	- The corresponding GitHub Actions workflow (`azure-functions-dev.yml`, `azure-functions-qa.yml`, or `azure-functions-prod.yml`) will run automatically.
+	- The workflow will:
+	  - Set up Python
+	  - Install dependencies
+	  - Zip the function app
+	  - Deploy to the correct Azure Function App using the secrets
+
+6. **Monitor Deployment**
+	- Check the Actions tab in GitHub for workflow status and logs.
+	- Verify deployment in the Azure portal by checking the Function App for updates.
+
+7. **Testing and Promotion**
+	- Test your app in the Dev environment first.
+	- Once validated, merge changes to the `qa` branch for QA deployment.
+	- After QA approval, merge to `main` for production deployment.
 
 ## GitHub Actions Workflow YAML Explanation
 

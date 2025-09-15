@@ -1,0 +1,5 @@
+azure-functions
+tensorflow
+numpy
+pandas
+scikit-learn
